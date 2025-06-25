@@ -1,34 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { Suspense } from 'react'
+import { ConfigProvider, Spin, theme as antdTheme } from 'antd'
+import ptBR from 'antd/es/locale/pt_BR'
+import { useTheme } from '@/hooks'
 
-function App() {
-  const [count, setCount] = useState(0)
+const App: React.FC = () => {
+  const { theme } = useTheme()
+  const { defaultAlgorithm, darkAlgorithm } = antdTheme
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <ConfigProvider
+      locale={ptBR}
+      theme={{
+        algorithm: theme === 'dark' ? darkAlgorithm : defaultAlgorithm,
+        token: {
+          colorPrimary: '#08d9d6',
+        },
+      }}
+    >
+      <Suspense
+        fallback={
+          <Spin
+            size="large"
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '100vh',
+            }}
+          />
+        }
+      >
+        {/* <RoutesComponents /> */}
+      </Suspense>
+    </ConfigProvider>
   )
 }
 
