@@ -12,6 +12,7 @@ const ThemeToggle: React.FC<ThemeToggleProps> = forwardRef<HTMLDivElement, Theme
       <div
         ref={ref}
         onClick={toggleTheme}
+        data-testid="theme-icon"
         className={`flex items-center justify-center cursor-pointer transition-colors duration-200 ${className}`}
         {...props}
       >
