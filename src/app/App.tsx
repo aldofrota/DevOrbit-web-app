@@ -1,44 +1,51 @@
 import React, { Suspense } from 'react'
 import { ConfigProvider, Spin, theme as antdTheme } from 'antd'
 import ptBR from 'antd/es/locale/pt_BR'
-import { useTheme } from '@/hooks'
+import { useLanguage, useTheme } from '@/hooks'
 import { Toaster } from 'react-hot-toast'
 import { ApolloProviderWrapper } from '@/providers/ApolloProviderWrapper'
+import { I18nProvider } from '@/providers/I18nProvider'
+import { LanguageSelector, ThemeToggle } from '@/components'
+// import RoutesComponents from '@/app/routes'
 
 const App: React.FC = () => {
   const { theme } = useTheme()
   const { defaultAlgorithm, darkAlgorithm } = antdTheme
+  const { t } = useLanguage()
 
   return (
-    <ConfigProvider
-      locale={ptBR}
-      theme={{
-        algorithm: theme === 'dark' ? darkAlgorithm : defaultAlgorithm,
-        token: {
-          colorPrimary: '#6366F1',
-        },
-      }}
-    >
-      <Suspense
-        fallback={
-          <Spin
-            size="large"
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: '100vh',
-            }}
-          />
-        }
+    <I18nProvider>
+      <ConfigProvider
+        locale={ptBR}
+        theme={{
+          algorithm: theme === 'dark' ? darkAlgorithm : defaultAlgorithm,
+          token: {
+            colorPrimary: '#6366F1',
+          },
+        }}
       >
-        <ApolloProviderWrapper>
-          <h1>Hello World</h1>
-          {/* <RoutesComponents /> */}
-        </ApolloProviderWrapper>
-        <Toaster position="top-right" />
-      </Suspense>
-    </ConfigProvider>
+        <Suspense
+          fallback={
+            <Spin
+              size="large"
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100vh',
+              }}
+            />
+          }
+        >
+          <ApolloProviderWrapper>
+            <LanguageSelector />
+            <ThemeToggle />
+            {/* <RoutesComponents /> */}
+          </ApolloProviderWrapper>
+          <Toaster position="top-right" />
+        </Suspense>
+      </ConfigProvider>
+    </I18nProvider>
   )
 }
 

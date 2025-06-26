@@ -1,10 +1,12 @@
 import { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '@/store'
 import { useNavigation } from '@/hooks'
 import { toastHelper } from '@/utils'
 import { authService } from '@/features/auth/services'
 
 export const useAuth = () => {
+  const { t } = useTranslation()
   const { goTo } = useNavigation()
   const { user, token, isAuthenticated, login, logout } = useAuthStore()
 
@@ -17,25 +19,25 @@ export const useAuth = () => {
           goTo('/')
         },
         {
-          loadingMessage: 'Entrando...',
-          successMessage: 'Bem-vindo ao DevOrbit!',
-          errorMessage: 'Erro ao entrar.',
+          loadingMessage: t('auth.loginLoading'),
+          successMessage: t('auth.loginSuccess'),
+          errorMessage: t('auth.loginError'),
         },
       )
     },
-    [login, goTo],
+    [login, goTo, t],
   )
 
   const handleLogout = useCallback(async () => {
     try {
       await authService.logout()
     } catch (error) {
-      console.error('Erro no logout:', error)
+      console.error(t('auth.logoutError'), error)
     } finally {
       logout()
       goTo('/login')
     }
-  }, [logout, goTo])
+  }, [logout, goTo, t])
 
   return {
     user,

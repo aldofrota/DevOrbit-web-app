@@ -42,17 +42,8 @@ describe('useAuth', () => {
     id: '1',
     name: 'João Silva',
     email: 'joao@example.com',
-    firstAccess: false,
-    role: 'user',
-    companyId: 'company-1',
-    avatar: null,
-    status: 'active',
-    company: {
-      id: 'company-1',
-      name: 'Empresa Teste',
-      timezone: 'America/Sao_Paulo',
-    },
-    teamIds: ['team-1'],
+    username: 'joao',
+    avatarUrl: null,
   }
 
   const mockToken = 'mock-jwt-token'
