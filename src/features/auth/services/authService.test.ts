@@ -19,17 +19,8 @@ describe('AuthService', () => {
     id: '1',
     name: 'João Silva',
     email: 'joao@example.com',
-    firstAccess: false,
-    role: 'user',
-    companyId: 'company-1',
-    avatar: null,
-    status: 'active',
-    company: {
-      id: 'company-1',
-      name: 'Empresa Teste',
-      timezone: 'America/Sao_Paulo',
-    },
-    teamIds: ['team-1'],
+    username: 'joao',
+    avatarUrl: null,
   }
 
   const mockToken = 'mock-jwt-token'
@@ -329,7 +320,8 @@ describe('AuthService', () => {
       expect(result.user).toHaveProperty('id')
       expect(result.user).toHaveProperty('name')
       expect(result.user).toHaveProperty('email')
-      expect(result.user).toHaveProperty('company')
+      expect(result.user).toHaveProperty('username')
+      expect(result.user).toHaveProperty('avatarUrl')
       expect(result).toHaveProperty('token')
     })
   })

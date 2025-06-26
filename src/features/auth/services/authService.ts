@@ -9,19 +9,10 @@ interface LoginCredentials {
 interface LoginResponse {
   user: {
     id: string
+    username: string
     name: string
     email: string
-    firstAccess: boolean
-    role: string
-    companyId: string
-    avatar: string | null
-    status: string
-    company: {
-      id: string
-      name: string
-      timezone: string
-    }
-    teamIds: string[]
+    avatarUrl: string | null
   }
   token: string
 }
@@ -31,19 +22,10 @@ const LOGIN_MUTATION = gql`
     login(input: { email: $email, password: $password }) {
       user {
         id
+        username
         name
         email
-        firstAccess
-        role
-        companyId
-        avatar
-        status
-        company {
-          id
-          name
-          timezone
-        }
-        teamIds
+        avatarUrl
       }
       token
     }
@@ -133,15 +115,15 @@ export class AuthService {
   }
 }
 
-// Factory function para criar instância com Apollo Client
+// Factory function to create instance with Apollo Client
 export const createAuthService = (apolloClient: ApolloClient<any>) => {
   return AuthService.getInstance(apolloClient)
 }
 
-// Instância padrão (será configurada posteriormente)
+// Default instance (will be configured later)
 export let authService: AuthService
 
-// Função para inicializar o authService com Apollo Client
+// Function to initialize authService with Apollo Client
 export const initializeAuthService = (apolloClient: ApolloClient<any>) => {
   authService = createAuthService(apolloClient)
   return authService
