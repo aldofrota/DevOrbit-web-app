@@ -1,16 +1,18 @@
 import React from 'react'
 
-// Páginas públicas
+// Public pages
 const Login = React.lazy(() => import('@/features/auth/pages/Login'))
 
-// Páginas protegidas
+// Protected pages
 const Feed = React.lazy(() => import('@/features/feed/pages/Feed'))
+const Profile = React.lazy(() => import('@/features/profile/pages/Profile'))
 
-// Rotas públicas
+// Public routes
 export const publicRoutes = [{ path: '/login', component: <Login /> }]
 
-// Rotas protegidas
+// Protected routes
 export const authProtectedRoutes = [
   { path: '/', component: <Feed /> },
   { path: '/feed', component: <Feed /> },
+  { path: '/:username', component: <Profile /> },
 ]

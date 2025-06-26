@@ -1,40 +1,45 @@
-import { useCallback } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useCallback } from 'react'
+import { useNavigate, useLocation, useParams } from 'react-router-dom'
 
 export const useNavigation = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate = useNavigate()
+  const location = useLocation()
+  const params = useParams()
 
   const goTo = useCallback(
     (path: string) => {
-      navigate(path);
+      navigate(path)
     },
-    [navigate]
-  );
+    [navigate],
+  )
+
+  const getParams = () => {
+    return params
+  }
 
   const goBack = useCallback(() => {
-    navigate(-1);
-  }, [navigate]);
+    navigate(-1)
+  }, [navigate])
 
   const goHome = useCallback(() => {
-    navigate("/");
-  }, [navigate]);
+    navigate('/')
+  }, [navigate])
 
   const goToLogin = useCallback(() => {
-    navigate("/login");
-  }, [navigate]);
+    navigate('/login')
+  }, [navigate])
 
   const goToPreviousPage = useCallback(() => {
-    const previousPath = location.state?.from || "/";
-    navigate(previousPath);
-  }, [navigate, location]);
+    const previousPath = location.state?.from || '/'
+    navigate(previousPath)
+  }, [navigate, location])
 
   const isCurrentPath = useCallback(
     (path: string) => {
-      return location.pathname === path;
+      return location.pathname === path
     },
-    [location]
-  );
+    [location],
+  )
 
   return {
     goTo,
@@ -44,5 +49,6 @@ export const useNavigation = () => {
     goToPreviousPage,
     isCurrentPath,
     currentPath: location.pathname,
-  };
-};
+    getParams,
+  }
+}

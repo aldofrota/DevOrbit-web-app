@@ -47,18 +47,12 @@
     "passwordsDoNotMatch": "Senhas não coincidem"
   },
   "navigation": {
-    "home": "Início",
-    "dashboard": "Painel",
+    "home": "Página Inicial",
+    "search": "Pesquisar",
+    "notifications": "Notificações",
+    "messages": "Mensagens",
     "profile": "Perfil",
-    "settings": "Configurações",
-    "feed": "Feed",
-    "conversations": "Conversas",
-    "assistants": "Assistentes",
-    "tools": "Ferramentas",
-    "contacts": "Contatos",
-    "integrations": "Integrações",
-    "segments": "Segmentos",
-    "campaigns": "Campanhas"
+    "settings": "Configurações"
   },
   "sidebar": {
     "title": "DevOrbit",

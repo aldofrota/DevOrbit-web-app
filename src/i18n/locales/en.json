@@ -48,17 +48,11 @@
   },
   "navigation": {
     "home": "Home",
-    "dashboard": "Dashboard",
+    "search": "Search",
+    "notifications": "Notifications",
+    "messages": "Messages",
     "profile": "Profile",
-    "settings": "Settings",
-    "feed": "Feed",
-    "conversations": "Conversations",
-    "assistants": "Assistants",
-    "tools": "Tools",
-    "contacts": "Contacts",
-    "integrations": "Integrations",
-    "segments": "Segments",
-    "campaigns": "Campaigns"
+    "settings": "Settings"
   },
   "sidebar": {
     "title": "DevOrbit",
