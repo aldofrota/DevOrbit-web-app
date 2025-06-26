@@ -1,17 +1,15 @@
 import React, { Suspense } from 'react'
 import { ConfigProvider, Spin, theme as antdTheme } from 'antd'
 import ptBR from 'antd/es/locale/pt_BR'
-import { useLanguage, useTheme } from '@/hooks'
+import { useTheme } from '@/hooks'
 import { Toaster } from 'react-hot-toast'
 import { ApolloProviderWrapper } from '@/providers/ApolloProviderWrapper'
 import { I18nProvider } from '@/providers/I18nProvider'
-import { LanguageSelector, ThemeToggle } from '@/components'
-// import RoutesComponents from '@/app/routes'
+import RoutesComponents from '@/app/routes'
 
 const App: React.FC = () => {
   const { theme } = useTheme()
   const { defaultAlgorithm, darkAlgorithm } = antdTheme
-  const { t } = useLanguage()
 
   return (
     <I18nProvider>
@@ -38,9 +36,7 @@ const App: React.FC = () => {
           }
         >
           <ApolloProviderWrapper>
-            <LanguageSelector />
-            <ThemeToggle />
-            {/* <RoutesComponents /> */}
+            <RoutesComponents />
           </ApolloProviderWrapper>
           <Toaster position="top-right" />
         </Suspense>

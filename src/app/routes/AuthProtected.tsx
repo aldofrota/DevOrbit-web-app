@@ -1,20 +1,20 @@
-import React from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import { useAuthStore } from "@/shared/state/authStore";
+import React from 'react'
+import { Navigate, useLocation } from 'react-router-dom'
+import { useAuthStore } from '@/store'
 
 interface AuthProtectedProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const AuthProtected: React.FC<AuthProtectedProps> = ({ children }) => {
-  const location = useLocation();
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const location = useLocation()
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated)
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />
   }
 
-  return <>{children}</>;
-};
+  return <>{children}</>
+}
 
-export default AuthProtected;
+export default AuthProtected

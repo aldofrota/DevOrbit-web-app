@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Routes, useLocation } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import Layout from '@/app/layout/Layout'
 import NonAuthLayout from '@/app/layout/NonAuthLayout'
 import AuthProtected from '@/app/routes/AuthProtected'
@@ -7,12 +7,11 @@ import { authProtectedRoutes, publicRoutes } from '@/app/routes/allRoutes'
 import { useNavigation } from '@/hooks'
 
 const RoutesComponents = () => {
-  const location = useLocation()
   const { currentPath } = useNavigation()
 
   return (
     <React.Fragment>
-      <Routes location={location} key={currentPath}>
+      <Routes key={currentPath}>
         <Route>
           {publicRoutes.map((route, idx) => (
             <Route
