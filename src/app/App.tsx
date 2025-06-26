@@ -18,7 +18,7 @@ const App: React.FC = () => {
         theme={{
           algorithm: theme === 'dark' ? darkAlgorithm : defaultAlgorithm,
           token: {
-            colorPrimary: '#6366F1',
+            colorPrimary: '#2563eb',
           },
         }}
       >

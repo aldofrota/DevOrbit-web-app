@@ -1,5 +1,15 @@
 @tailwind utilities;
 @import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --color-primary: #2563eb;
+  --color-secondary: #7c3aed;
+  --color-background-dark: #343541;
+  --color-background: #f9fafb;
+  --color-text: #1f2937;
+  --color-text-secondary: #6b7280;
+}
 
 * {
   margin: 0;

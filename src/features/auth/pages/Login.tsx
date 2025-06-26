@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, Input, Card, Typography, Checkbox } from 'antd'
+import { Button, Input, Card, Typography } from 'antd'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { AiFillGithub } from 'react-icons/ai'
 import { FcGoogle } from 'react-icons/fc'
@@ -7,6 +7,8 @@ import { FcGoogle } from 'react-icons/fc'
 import logoDark from '@/assets/1.png'
 import logoLight from '@/assets/2.png'
 import { useTheme } from '@/hooks'
+import ThemeToggle from '@/components/ThemeToggle'
+import { useAuth } from '@/features/auth/hooks'
 
 const { Title, Text } = Typography
 
@@ -16,24 +18,22 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [isLogin, setIsLogin] = useState(true)
   const { isDark } = useTheme()
+  const { login } = useAuth()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Aqui você implementaria a lógica de login/cadastro
-    console.log('Form submitted:', { email, password, isLogin })
+    await login(email, password)
   }
 
   return (
     <div
-      className={`min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800`}
+      className={`min-h-screen flex items-center justify-center p-4 bg-background dark:bg-background-dark`}
     >
       <div className="w-full max-w-md">
-        {/* Logo/Brand */}
         <div className="flex justify-center mb-8">
           <img src={isDark ? logoDark : logoLight} alt="Logo DevOrbit" className="h-20" />
         </div>
 
-        {/* Login Card */}
         <Card
           className={`backdrop-blur-sm border-0 shadow-xl ${isDark ? 'dark-card' : ''}`}
           style={{
@@ -54,7 +54,6 @@ const Login: React.FC = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="gap-4 flex flex-col">
-            {/* Email Field */}
             <div className="gap-2 flex flex-col">
               <label
                 htmlFor="email"
@@ -73,7 +72,6 @@ const Login: React.FC = () => {
               />
             </div>
 
-            {/* Password Field */}
             <div className="gap-2 flex flex-col">
               <label
                 htmlFor="password"
@@ -100,10 +98,8 @@ const Login: React.FC = () => {
               />
             </div>
 
-            {/* Remember me & Forgot password */}
             {isLogin && (
-              <div className="flex items-center justify-between text-sm mb-2">
-                <Checkbox style={{ color: isDark ? '#cbd5e1' : undefined }}>Lembrar-me</Checkbox>
+              <div className="flex items-center justify-end text-sm mb-2">
                 <Button
                   type="link"
                   style={{ padding: 0, height: 'auto', color: isDark ? '#60a5fa' : undefined }}
@@ -113,23 +109,11 @@ const Login: React.FC = () => {
               </div>
             )}
 
-            {/* Submit Button */}
-            <Button
-              type="primary"
-              htmlType="submit"
-              size="large"
-              block
-              style={{
-                background: 'linear-gradient(to right, #2563eb, #7c3aed)',
-                border: 0,
-                fontWeight: 500,
-              }}
-            >
+            <Button type="primary" htmlType="submit" size="large" block>
               {isLogin ? 'Entrar' : 'Criar Conta'}
             </Button>
           </form>
 
-          {/* Divider */}
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-200 dark:border-gray-700"></div>
@@ -141,7 +125,8 @@ const Login: React.FC = () => {
             </div>
           </div>
 
-          {/* Social Login */}
+          <ThemeToggle />
+
           <div className="gap-3 flex flex-col items-center">
             <Button
               type="default"
@@ -169,7 +154,6 @@ const Login: React.FC = () => {
             </Button>
           </div>
 
-          {/* Toggle Login/Register */}
           <div className="text-center pt-4">
             <span className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
               {isLogin ? 'Não tem uma conta? ' : 'Já tem uma conta? '}
@@ -184,7 +168,6 @@ const Login: React.FC = () => {
           </div>
         </Card>
 
-        {/* Footer */}
         <div className={`text-center mt-8 text-sm ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
           <p>© 2024 DevOrbit. Todos os direitos reservados.</p>
         </div>
