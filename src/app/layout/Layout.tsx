@@ -1,6 +1,6 @@
 import React from 'react'
 import { Layout as AntLayout } from 'antd'
-import { Sidebar } from '@/app/layout/Sidebar'
+import Sidebar from '@/app/layout/Sidebar'
 
 const { Content } = AntLayout
 
@@ -13,7 +13,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <AntLayout className="min-h-screen overflow-hidden" hasSider>
       <Sidebar />
 
-      <AntLayout className="relative px-4 pt-[32px] flex-1 overflow-auto max-h-screen">
+      <AntLayout className="relative flex-1 overflow-auto max-h-screen">
         <Content className="flex">{children}</Content>
       </AntLayout>
     </AntLayout>
