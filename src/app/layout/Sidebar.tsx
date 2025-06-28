@@ -1,8 +1,19 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigation, useTheme } from '@/hooks'
-import { LuHouse, LuSearch, LuBell, LuUser, LuSettings, LuMail, LuLogOut } from 'react-icons/lu'
-import { Tooltip } from 'antd'
+import {
+  LuHouse,
+  LuSearch,
+  LuBell,
+  LuUser,
+  LuSettings,
+  LuLogOut,
+  LuSun,
+  LuMoon,
+} from 'react-icons/lu'
+import { IoChatbubblesOutline } from 'react-icons/io5'
+import { MdMenuOpen } from 'react-icons/md'
+import { Dropdown, type MenuProps } from 'antd'
 import { useAuth } from '@/features/auth/hooks'
 import logoDark from '@/assets/1.png'
 import logoLight from '@/assets/2.png'
@@ -11,14 +22,51 @@ const Sidebar: React.FC = () => {
   const { t } = useTranslation()
   const { goTo, isCurrentPath } = useNavigation()
   const { logout } = useAuth()
-  const { isDark } = useTheme()
+  const { isDark, toggleTheme } = useTheme()
 
   const menuItems = [
     { icon: LuHouse, label: t('navigation.home'), path: '/' },
     { icon: LuSearch, label: t('navigation.search') },
     { icon: LuBell, label: t('navigation.notifications') },
-    { icon: LuMail, label: t('navigation.messages'), path: '/messages' },
+    { icon: IoChatbubblesOutline, label: t('navigation.messages'), path: '/messages' },
     { icon: LuUser, label: t('navigation.profile'), path: '/profile' },
+  ]
+
+  const dropdownItems: MenuProps['items'] = [
+    {
+      key: 'settings',
+      label: (
+        <div className="flex items-center gap-2 h-11 w-full text-sm">
+          <LuSettings className="w-5 h-5" />
+          <span>{isDark ? 'Configurações' : 'Configurações'}</span>
+        </div>
+      ),
+      onClick: () => goTo('/settings'),
+    },
+    {
+      key: 'theme',
+      label: (
+        <div className="flex items-center gap-2 h-11 w-full text-sm">
+          <span>{isDark ? <LuSun className="w-5 h-5" /> : <LuMoon className="w-5 h-5" />}</span>
+          <span>{isDark ? 'Claro' : 'Escuro'}</span>
+        </div>
+      ),
+      onClick: () => toggleTheme(),
+    },
+    {
+      key: 'divider',
+      type: 'divider',
+    },
+    {
+      key: 'logout',
+      label: (
+        <div className="flex items-center gap-2 h-11 w-full text-sm">
+          <LuLogOut className="w-5 h-5" />
+          <span>Sair</span>
+        </div>
+      ),
+      onClick: () => logout(),
+    },
   ]
 
   return (
@@ -69,26 +117,27 @@ const Sidebar: React.FC = () => {
         </ul>
       </nav>
 
-      {/* User Profile */}
-      <div className="p-4 border-t border-gray-100 dark:border-gray-700">
-        <div className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-pointer">
-          <div className="flex items-center">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-              <span className="text-white font-medium text-sm">JD</span>
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-gray-900 dark:text-white">João Silva</p>
-              <p className="text-xs text-gray-500 dark:text-gray-300">@joaosilva</p>
-            </div>
-          </div>
-          <Tooltip title="Sair">
-            <LuLogOut
-              className="w-4 h-4 text-gray-400 dark:text-gray-300"
-              onClick={() => logout()}
-            />
-          </Tooltip>
-        </div>
-      </div>
+      {/* More Menu Dropdown */}
+      <Dropdown
+        menu={{
+          items: dropdownItems,
+          style: {
+            backgroundColor: isDark ? 'var(--color-background-dark)' : 'var(--color-background)',
+            boxShadow: '0 10px 10px 0 rgba(0, 0, 0, 0.1)',
+            border: `1px solid var(${isDark ? '--color-border-dark' : '--color-border'})`,
+            width: '266px',
+            borderRadius: '8px',
+            padding: '8px',
+          },
+        }}
+        placement="topRight"
+        trigger={['click']}
+      >
+        <button className="flex items-center h-14 w-full px-4 py-3 rounded-lg transition-all duration-200 text-left cursor-pointer text-gray-700 dark:text-gray-300 hover:!bg-gray-100 dark:hover:!bg-gray-800">
+          <MdMenuOpen className="w-5 h-5 mr-3 " />
+          <span className="text-base">Mais</span>
+        </button>
+      </Dropdown>
     </div>
   )
 }
