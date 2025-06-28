@@ -52,7 +52,8 @@
     "notifications": "Notifications",
     "messages": "Messages",
     "profile": "Profile",
-    "settings": "Settings"
+    "settings": "Settings",
+    "more": "More"
   },
   "sidebar": {
     "title": "DevOrbit",

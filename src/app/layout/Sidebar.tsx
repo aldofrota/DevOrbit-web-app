@@ -24,7 +24,6 @@ const Sidebar: React.FC = () => {
   const { logout, user } = useAuth()
   const { isDark, toggleTheme } = useTheme()
 
-  // Função para gerar iniciais do nome
   const getInitials = (name: string) => {
     const names = name.split(' ')
     if (names.length >= 2) {
@@ -32,8 +31,6 @@ const Sidebar: React.FC = () => {
     }
     return name[0]?.toUpperCase() || 'U'
   }
-
-  console.log(user)
 
   const menuItems = [
     { icon: LuHouse, label: t('navigation.home'), path: '/' },
@@ -108,7 +105,6 @@ const Sidebar: React.FC = () => {
         />
       </div>
 
-      {/* Navigation */}
       <nav className="flex-1">
         <ul className="space-y-2">
           {menuItems.map(item => {
@@ -151,7 +147,6 @@ const Sidebar: React.FC = () => {
         </ul>
       </nav>
 
-      {/* More Menu Dropdown */}
       <Dropdown
         menu={{
           items: dropdownItems,
@@ -169,7 +164,7 @@ const Sidebar: React.FC = () => {
       >
         <button className="flex items-center h-14 w-full px-4 py-3 rounded-lg transition-all duration-200 text-left cursor-pointer text-gray-700 dark:text-gray-300 hover:!bg-gray-100 dark:hover:!bg-gray-800">
           <MdMenuOpen className="w-5 h-5 mr-3 " />
-          <span className="text-base">Mais</span>
+          <span className="text-base">{t('navigation.more')}</span>
         </button>
       </Dropdown>
     </div>
