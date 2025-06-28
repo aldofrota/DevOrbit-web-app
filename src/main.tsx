@@ -5,6 +5,7 @@ import '@/styles/index.css'
 import '@ant-design/v5-patch-for-react-19'
 import App from '@/app/App'
 import { makeServer } from '@/mocks/server'
+import 'nprogress/nprogress.css'
 
 makeServer()
 

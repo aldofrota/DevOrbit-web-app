@@ -13,7 +13,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <AntLayout className="min-h-screen overflow-hidden" hasSider>
       <Sidebar />
 
-      <AntLayout className="relative flex-1 overflow-auto max-h-screen">
+      <AntLayout className="relative flex-1 overflow-auto max-h-screen bg-[var(--color-background)] dark:bg-[var(--color-background-dark)]">
         <Content className="flex">{children}</Content>
       </AntLayout>
     </AntLayout>
