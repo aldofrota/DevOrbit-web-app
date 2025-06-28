@@ -1,12 +1,16 @@
 import { createServer } from 'miragejs'
-import { createGraphQLHandler } from '@miragejs/graphql'
-import { typeDefs } from '@/mocks/schemas'
-import { resolvers } from '@/mocks/resolvers'
+import { authHandlers } from '@/mocks/handlers'
 
 export function makeServer() {
   return createServer({
     routes() {
-      this.post('/query', createGraphQLHandler(typeDefs, this.schema, { resolvers }))
+      this.timing = 750
+
+      this.post('/auth/login', authHandlers.login)
+      this.post('/auth/signup', authHandlers.register)
+      this.get('/auth/me', authHandlers.me)
+
+      this.passthrough()
     },
   })
 }

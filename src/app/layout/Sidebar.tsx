@@ -13,7 +13,7 @@ import {
 } from 'react-icons/lu'
 import { IoChatbubblesOutline } from 'react-icons/io5'
 import { MdMenuOpen } from 'react-icons/md'
-import { Dropdown, type MenuProps } from 'antd'
+import { Dropdown, type MenuProps, Avatar } from 'antd'
 import { useAuth } from '@/features/auth/hooks'
 import logoDark from '@/assets/1.png'
 import logoLight from '@/assets/2.png'
@@ -21,15 +21,43 @@ import logoLight from '@/assets/2.png'
 const Sidebar: React.FC = () => {
   const { t } = useTranslation()
   const { goTo, isCurrentPath } = useNavigation()
-  const { logout } = useAuth()
+  const { logout, user } = useAuth()
   const { isDark, toggleTheme } = useTheme()
+
+  // Função para gerar iniciais do nome
+  const getInitials = (name: string) => {
+    const names = name.split(' ')
+    if (names.length >= 2) {
+      return `${names[0][0]}${names[1][0]}`.toUpperCase()
+    }
+    return name[0]?.toUpperCase() || 'U'
+  }
+
+  console.log(user)
 
   const menuItems = [
     { icon: LuHouse, label: t('navigation.home'), path: '/' },
     { icon: LuSearch, label: t('navigation.search') },
     { icon: LuBell, label: t('navigation.notifications') },
     { icon: IoChatbubblesOutline, label: t('navigation.messages'), path: '/messages' },
-    { icon: LuUser, label: t('navigation.profile'), path: '/profile' },
+    {
+      icon: LuUser,
+      label: t('navigation.profile'),
+      path: '/profile',
+      customContent: (active: boolean) => (
+        <div className="flex items-center">
+          <Avatar
+            src={user?.avatarUrl}
+            size={24}
+            className="mr-3"
+            style={{ backgroundColor: '#3b82f6' }}
+          >
+            {user ? getInitials(user.name) : 'U'}
+          </Avatar>
+          <span className={`text-sm ${active ? 'font-bold' : ''}`}>{t('navigation.profile')}</span>
+        </div>
+      ),
+    },
   ]
 
   const dropdownItems: MenuProps['items'] = [
@@ -101,15 +129,21 @@ const Sidebar: React.FC = () => {
                   `}
                   disabled={!item.path}
                 >
-                  <item.icon
-                    className={`w-5 h-5 mr-3 ${
-                      active
-                        ? 'text-blue-600 dark:text-blue-300 font-bold'
-                        : 'text-gray-400 dark:text-gray-400 group-hover:text-blue-500'
-                    }`}
-                    style={{ strokeWidth: active ? 2.5 : 1.5 }}
-                  />
-                  <span className="text-base">{item.label}</span>
+                  {item.customContent ? (
+                    item.customContent(Boolean(active))
+                  ) : (
+                    <>
+                      <item.icon
+                        className={`w-5 h-5 mr-3 ${
+                          active
+                            ? 'text-blue-600 dark:text-blue-300 font-bold'
+                            : 'text-gray-400 dark:text-gray-400 group-hover:text-blue-500'
+                        }`}
+                        style={{ strokeWidth: active ? 2.5 : 1.5 }}
+                      />
+                      <span className="text-base">{item.label}</span>
+                    </>
+                  )}
                 </button>
               </li>
             )

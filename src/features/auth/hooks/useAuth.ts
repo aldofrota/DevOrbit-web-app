@@ -28,22 +28,35 @@ export const useAuth = () => {
     [login, goTo, t],
   )
 
+  const handleRegister = useCallback(
+    async (name: string, email: string, password: string) => {
+      await toastHelper.withLoadingToast(
+        async () => {
+          const result = await authService.register({ name, email, password })
+          login(result.user, result.token)
+          goTo('/')
+        },
+        {
+          loadingMessage: t('auth.registerLoading'),
+          successMessage: t('auth.registerSuccess'),
+          errorMessage: t('auth.registerError'),
+        },
+      )
+    },
+    [login, goTo, t],
+  )
+
   const handleLogout = useCallback(async () => {
-    try {
-      await authService.logout()
-    } catch (error) {
-      console.error(t('auth.logoutError'), error)
-    } finally {
-      logout()
-      goTo('/login')
-    }
-  }, [logout, goTo, t])
+    logout()
+    goTo('/login')
+  }, [logout, goTo])
 
   return {
     user,
     token,
     isAuthenticated,
     login: handleLogin,
+    register: handleRegister,
     logout: handleLogout,
   }
 }

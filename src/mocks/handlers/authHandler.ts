@@ -1,24 +1,13 @@
 import { Response } from 'miragejs'
 import { faker } from '@faker-js/faker/locale/pt_BR'
-
-interface LoginResponse {
-  user: {
-    id: string
-    username: string
-    name: string
-    email: string
-    avatarUrl: string | null
-  }
-  token: string
-}
+import type { AuthResponse } from '@/features/auth/types'
 
 export const authHandlers = {
-  login(request: any) {
-    const { email, password } = request
+  login(_: any, request: any) {
+    const { email, password } = JSON.parse(request.requestBody)
 
-    // Simula validação de credenciais
     if (email && password) {
-      const response: LoginResponse = {
+      const response: AuthResponse = {
         user: {
           id: faker.string.uuid(),
           name: faker.person.fullName(),
@@ -38,9 +27,8 @@ export const authHandlers = {
   register(_: any, request: any) {
     const { name, email, password } = JSON.parse(request.requestBody)
 
-    // Simula validação de dados
     if (name && email && password) {
-      const response: LoginResponse = {
+      const response: AuthResponse = {
         user: {
           id: faker.string.uuid(),
           name,

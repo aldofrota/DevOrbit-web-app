@@ -4,7 +4,6 @@ import NProgress from 'nprogress'
 import ptBR from 'antd/es/locale/pt_BR'
 import { useTheme } from '@/hooks'
 import { Toaster } from 'react-hot-toast'
-import { ApolloProviderWrapper } from '@/providers/ApolloProviderWrapper'
 import { I18nProvider } from '@/providers/I18nProvider'
 import RoutesComponents from '@/app/routes'
 import { useLocation } from 'react-router-dom'
@@ -44,9 +43,7 @@ const App: React.FC = () => {
             />
           }
         >
-          <ApolloProviderWrapper>
-            <RoutesComponents />
-          </ApolloProviderWrapper>
+          <RoutesComponents />
           <Toaster position="top-right" />
         </Suspense>
       </ConfigProvider>

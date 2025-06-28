@@ -1,102 +1,69 @@
-import { ApolloClient, gql } from '@apollo/client'
+import { httpClient } from '@/lib/httpClient'
 import { useAuthStore } from '@/store'
-
-interface LoginCredentials {
-  email: string
-  password: string
-}
-
-interface LoginResponse {
-  user: {
-    id: string
-    username: string
-    name: string
-    email: string
-    avatarUrl: string | null
-  }
-  token: string
-}
-
-const LOGIN_MUTATION = gql`
-  mutation Login($email: String!, $password: String!) {
-    login(input: { email: $email, password: $password }) {
-      user {
-        id
-        username
-        name
-        email
-        avatarUrl
-      }
-      token
-    }
-  }
-`
-
-const LOGOUT_MUTATION = gql`
-  mutation Logout {
-    logout {
-      success
-    }
-  }
-`
-
-const REFRESH_TOKEN_MUTATION = gql`
-  mutation RefreshToken {
-    refreshToken {
-      token
-    }
-  }
-`
+import type { AuthResponse, LoginCredentials, RegisterCredentials } from '@/features/auth/types'
 
 export class AuthService {
   private static instance: AuthService
-  private apolloClient: ApolloClient<any>
 
-  private constructor(apolloClient: ApolloClient<any>) {
-    this.apolloClient = apolloClient
-  }
+  private constructor() {}
 
-  static getInstance(apolloClient?: ApolloClient<any>): AuthService {
+  static getInstance(): AuthService {
     if (!AuthService.instance) {
-      if (!apolloClient) {
-        throw new Error('ApolloClient is required for AuthService initialization')
-      }
-      AuthService.instance = new AuthService(apolloClient)
+      AuthService.instance = new AuthService()
     }
     return AuthService.instance
   }
 
-  async login(credentials: LoginCredentials): Promise<LoginResponse> {
-    const { data } = await this.apolloClient.mutate({
-      mutation: LOGIN_MUTATION,
-      variables: credentials,
-    })
+  async login(credentials: LoginCredentials): Promise<AuthResponse> {
+    try {
+      const response = await httpClient.post('/auth/login', credentials)
+      const result = response.data
 
-    const result = data?.login
-    if (!result) {
+      if (!result || !result.user || !result.token) {
+        throw new Error('Login failed')
+      }
+
+      if (!result.user.id || !result.user.name || !result.user.email || !result.user.username) {
+        throw new Error('Invalid user data received from server')
+      }
+
+      return result
+    } catch (error: any) {
+      if (error.response?.data?.message) {
+        throw new Error(error.response.data.message)
+      }
       throw new Error('Login failed')
     }
-
-    return result
   }
 
-  async logout(): Promise<void> {
-    await this.apolloClient.mutate({
-      mutation: LOGOUT_MUTATION,
-    })
-  }
+  async register(credentials: RegisterCredentials): Promise<AuthResponse> {
+    try {
+      const response = await httpClient.post('/auth/register', credentials)
+      const result = response.data
 
-  async refreshToken(): Promise<{ token: string }> {
-    const { data } = await this.apolloClient.mutate({
-      mutation: REFRESH_TOKEN_MUTATION,
-    })
+      if (!result || !result.user || !result.token) {
+        throw new Error('Registration failed')
+      }
 
-    const result = data?.refreshToken
-    if (!result) {
-      throw new Error('Token refresh failed')
+      return result
+    } catch (error: any) {
+      if (error.response?.data?.message) {
+        throw new Error(error.response.data.message)
+      }
+      throw new Error('Registration failed')
     }
+  }
 
-    return result
+  async getCurrentUser(): Promise<AuthResponse> {
+    try {
+      const response = await httpClient.get('/auth/me')
+      return response.data
+    } catch (error: any) {
+      if (error.response?.data?.message) {
+        throw new Error(error.response.data.message)
+      }
+      throw new Error('Failed to get current user')
+    }
   }
 
   isAuthenticated(): boolean {
@@ -115,16 +82,4 @@ export class AuthService {
   }
 }
 
-// Factory function to create instance with Apollo Client
-export const createAuthService = (apolloClient: ApolloClient<any>) => {
-  return AuthService.getInstance(apolloClient)
-}
-
-// Default instance (will be configured later)
-export let authService: AuthService
-
-// Function to initialize authService with Apollo Client
-export const initializeAuthService = (apolloClient: ApolloClient<any>) => {
-  authService = createAuthService(apolloClient)
-  return authService
-}
+export const authService = AuthService.getInstance()

@@ -39,8 +39,8 @@ export const toastHelper = {
       const result = await operation()
       this.success(toastId, successMessage)
       return result
-    } catch (error) {
-      this.error(toastId, errorMessage)
+    } catch (error: any) {
+      this.error(toastId, `${errorMessage}: ${error.message}`)
       throw error
     }
   },
