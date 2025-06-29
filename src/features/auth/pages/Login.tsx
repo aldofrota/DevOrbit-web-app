@@ -7,7 +7,6 @@ import { FcGoogle } from 'react-icons/fc'
 import logoDark from '@/assets/1.png'
 import logoLight from '@/assets/2.png'
 import { useTheme } from '@/hooks'
-import ThemeToggle from '@/components/ThemeToggle'
 import { useAuth } from '@/features/auth/hooks'
 
 const { Title, Text } = Typography
@@ -124,8 +123,6 @@ const Login: React.FC = () => {
               </span>
             </div>
           </div>
-
-          <ThemeToggle />
 
           <div className="gap-3 flex flex-col items-center">
             <Button

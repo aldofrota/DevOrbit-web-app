@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigation, useTheme } from '@/hooks'
 import {
@@ -11,18 +11,21 @@ import {
   LuSun,
   LuMoon,
 } from 'react-icons/lu'
+import { LiaLanguageSolid } from 'react-icons/lia'
 import { IoChatbubblesOutline } from 'react-icons/io5'
 import { MdMenuOpen } from 'react-icons/md'
 import { Dropdown, type MenuProps, Avatar } from 'antd'
 import { useAuth } from '@/features/auth/hooks'
 import logoDark from '@/assets/1.png'
 import logoLight from '@/assets/2.png'
+import { LanguageSelector } from '@/components'
 
 const Sidebar: React.FC = () => {
   const { t } = useTranslation()
   const { goTo, isCurrentPath } = useNavigation()
   const { logout, user } = useAuth()
   const { isDark, toggleTheme } = useTheme()
+  const [dropdownOpen, setDropdownOpen] = useState(false)
 
   const getInitials = (name: string) => {
     const names = name.split(' ')
@@ -66,7 +69,26 @@ const Sidebar: React.FC = () => {
           <span>{isDark ? 'Configurações' : 'Configurações'}</span>
         </div>
       ),
-      onClick: () => goTo('/settings'),
+      onClick: e => {
+        e.domEvent.stopPropagation()
+        goTo('/settings')
+      },
+    },
+    {
+      key: 'language',
+      label: (
+        <div
+          className="flex items-center gap-2 h-11 w-full text-sm"
+          onClick={e => e.stopPropagation()}
+          onMouseDown={e => e.stopPropagation()}
+        >
+          <LiaLanguageSolid className="w-5 h-5" />
+          <LanguageSelector />
+        </div>
+      ),
+      onClick: e => {
+        e.domEvent.stopPropagation()
+      },
     },
     {
       key: 'theme',
@@ -76,7 +98,10 @@ const Sidebar: React.FC = () => {
           <span>{isDark ? 'Claro' : 'Escuro'}</span>
         </div>
       ),
-      onClick: () => toggleTheme(),
+      onClick: e => {
+        e.domEvent.stopPropagation()
+        toggleTheme()
+      },
     },
     {
       key: 'divider',
@@ -90,7 +115,10 @@ const Sidebar: React.FC = () => {
           <span>Sair</span>
         </div>
       ),
-      onClick: () => logout(),
+      onClick: e => {
+        e.domEvent.stopPropagation()
+        logout()
+      },
     },
   ]
 
@@ -161,6 +189,11 @@ const Sidebar: React.FC = () => {
         }}
         placement="topRight"
         trigger={['click']}
+        autoAdjustOverflow={false}
+        destroyOnHidden={false}
+        open={dropdownOpen}
+        onOpenChange={setDropdownOpen}
+        autoFocus={false}
       >
         <button className="flex items-center h-14 w-full px-4 py-3 rounded-lg transition-all duration-200 text-left cursor-pointer text-gray-700 dark:text-gray-300 hover:!bg-gray-100 dark:hover:!bg-gray-800">
           <MdMenuOpen className="w-5 h-5 mr-3 " />
