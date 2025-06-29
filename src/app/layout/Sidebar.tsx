@@ -123,7 +123,7 @@ const Sidebar: React.FC = () => {
   ]
 
   return (
-    <div className="fixed left-0 top-0 h-screen max-md:w-[244px] w-[335px] p-3 bg-[var(--color-background)] dark:bg-[var(--color-background-dark)] border-r border-gray-200 dark:border-gray-700 flex flex-col z-10">
+    <div className="h-screen max-md:w-[244px] w-[335px] p-3 bg-[var(--color-background)] dark:bg-[var(--color-background-dark)] border-r border-gray-200 dark:border-gray-700 flex flex-col">
       <div className="px-3 py-4 mb-4">
         <img
           src={isDark ? logoDark : logoLight}
